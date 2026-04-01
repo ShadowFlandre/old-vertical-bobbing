@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "aubymori.oldverticalbobbing.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"GameRendererMixin",
+		"PlayerImpl"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

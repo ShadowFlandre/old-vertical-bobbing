@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "old-vertical-bobbing",
+	"version": "${version}",
+	"name": "Old Vertical Bobbing",
+	"description": "Makes the camera bob with vertical movement like it did before 1.14",
+	"authors": [
+		"aubymori"
+	],
+	"contact": {
+		"homepage": "https://github.com/aubymori/old-vertical-bobbing",
+		"sources": "https://github.com/aubymori/old-vertical-bobbing"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/old-vertical-bobbing/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"aubymori.oldverticalbobbing.OldVerticalBobbing"
+		]
+	},
+	"mixins": [
+		"old-vertical-bobbing.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.5",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
