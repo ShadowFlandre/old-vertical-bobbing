@@ -3,8 +3,6 @@ package aubymori.oldverticalbobbing.mixin;
 import aubymori.oldverticalbobbing.OldVerticalBobbing;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.renderer.state.GameRenderState;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
 import org.joml.Matrix4fc;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,19 +24,6 @@ import net.minecraft.world.entity.player.Player;
 public abstract class GameRendererMixin {
     @Shadow @Final Minecraft minecraft;
     @Shadow @Final Camera mainCamera;
-    @Shadow @Final GameRenderState gameRenderState;
-
-    private float partialTick;
-
-    @Inject(
-        method = "renderLevel",
-        at = @At("HEAD")
-    )
-    private void onRenderLevel(DeltaTracker deltaTracker, CallbackInfo ci) {
-        if (this.gameRenderState.levelRenderState.cameraRenderState.entityRenderState.isPlayer) {
-            this.partialTick = this.mainCamera.getCameraEntityPartialTicks(deltaTracker);
-        }
-    }
 
     @Inject(
         method = "bobView",
@@ -49,11 +34,10 @@ public abstract class GameRendererMixin {
             target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V"
         )
     )
-    private void onBobView(CameraRenderState cameraState, PoseStack poseStack, CallbackInfo callback) {
-        if (cameraState.entityRenderState.isPlayer) {
-            Player player = (Player)this.minecraft.getCameraEntity();
+    private void onBobView(PoseStack poseStack, float f, CallbackInfo callback) {
+        if (this.minecraft.getCameraEntity() instanceof Player player) {
             CameraPitching cameraPitching = (CameraPitching)player;
-            float pitch = Mth.lerp(this.partialTick, cameraPitching.getPrevCameraPitch(), cameraPitching.getCameraPitch());
+            float pitch = Mth.lerp(f, cameraPitching.getPrevCameraPitch(), cameraPitching.getCameraPitch());
 
             poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
         }
